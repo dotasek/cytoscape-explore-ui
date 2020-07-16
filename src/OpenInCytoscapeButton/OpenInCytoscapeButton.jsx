@@ -108,7 +108,7 @@ const OpenInCytoscapeButton = props => {
         title="Open this network in Cytoscape Desktop"
         placement="bottom"
       >
-        <div>
+        <span>
           <BootstrapButton
             className={classes.button}
             variant="outlined"
@@ -121,7 +121,7 @@ const OpenInCytoscapeButton = props => {
               className={classes.buttonIcon}
             />
           </BootstrapButton>
-        </div>
+          </span>
       </Tooltip>
 
     </React.Fragment>
