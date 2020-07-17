@@ -1,4 +1,4 @@
-import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import { withStyles } from '@material-ui/core'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 
@@ -13,4 +13,4 @@ export default withStyles({
         backgroundColor: fade('#EA9123', 0.08)
       }
     }
-  })(IconButton)
+  })(Button)

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import Icon from '@material-ui/core/Icon'
 import logo from '../assets/images/cytoscape-logo.svg'
 import logoDisabled from '../assets/images/cytoscape-logo-mono-light.svg'
 import { withStyles } from '@material-ui/core'
@@ -13,23 +13,20 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 
 function CytoscapeIcon(props) {
   return (
-    <SvgIcon {...props}>
-      <path 
-        d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" 
-      />
-    </SvgIcon>
+    <Icon { ... props }>
+      <img  src= { logo }/>
+    </Icon>
   );
 }
 
 const styles = theme => ({
-  buttonIcon: {
-    //height: '2em'
-  },
   button: {
     color: '#EA9123',
-    //height: '3em',
-    //width: '4.3em',
-    //minWidth: '4.3em'
+    'line-height' : 0
+  },
+  buttonIcon : {
+    height: '100%',
+    width: '100%',
   }
 })
 
@@ -104,6 +101,7 @@ const OpenInCytoscapeButton = props => {
     cyRESTPollingActive = defaultGetPollingActive,
     cyRESTPort = 1234,
     variant,
+    size,
     fetchCX
   } = props
 
@@ -129,10 +127,12 @@ const OpenInCytoscapeButton = props => {
             variant={ variant }
             disabled={!getAvailable()}
             onClick={importNetwork}
-            //endIcon = {!getAvailable() ? logoDisabled : logo}
-            
+            size={size}
+           
           > 
-            <CytoscapeIcon />
+            <Icon >
+              <img className={classes.buttonIcon} src= { !getAvailable() ? logoDisabled : logo }/>
+            </Icon>
           </BootstrapButton>
           </span>
       </Tooltip>
