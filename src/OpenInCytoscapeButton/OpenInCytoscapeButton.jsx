@@ -89,6 +89,7 @@ const OpenInCytoscapeButton = props => {
     getAvailable = defaultGetAvailable,
     cyRESTPollingActive = defaultGetPollingActive,
     cyRESTPort = 1234,
+    variant,
     fetchCX
   } = props
 
@@ -111,7 +112,7 @@ const OpenInCytoscapeButton = props => {
         <span>
           <BootstrapButton
             className={classes.button}
-            variant="outlined"
+            variant={ variant }
             disabled={!getAvailable()}
             onClick={importNetwork}
           >
