@@ -1,30 +1,23 @@
 import React, { useState, useEffect } from 'react'
+import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
 import logo from '../assets/images/cytoscape-logo.svg'
 import logoDisabled from '../assets/images/cytoscape-logo-mono-light.svg'
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import BootstrapButton from '../BootstrapButton'
-
-import SvgIcon from '@material-ui/core/SvgIcon';
-
-
-
-function CytoscapeIcon(props) {
-  return (
-    <Icon { ... props }>
-      <img  src= { logo }/>
-    </Icon>
-  );
-}
+import { fade } from '@material-ui/core/styles/colorManipulator'
 
 const styles = theme => ({
   button: {
     color: '#EA9123',
-    'line-height' : 0
+    borderColor: '#EA9123',
+    '&:active': {
+      borderColor: '#EA9123'
+    },
+    'line-height': 0
   },
-  buttonIcon : {
+  buttonIcon: {
     height: '100%',
     width: '100%',
   }
@@ -34,7 +27,7 @@ const OpenInCytoscapeButton = props => {
 
   const status = cyRESTPort => {
     const statusUrl = CYREST_BASE_URL + ':' + cyRESTPort + '/v1'
-  
+
     return fetch(statusUrl, {
       method: METHOD_GET
     })
@@ -79,22 +72,23 @@ const OpenInCytoscapeButton = props => {
   const METHOD_GET = 'GET'
 
   const importNetwork = () => {
-    fetchCX().then( cx => {
+    fetchCX().then(cx => {
       const importNetworkUrl =
-      CYREST_BASE_URL + ':' + cyRESTPort + '/cyndex2/v1/networks/cx'
-    console.log('Calling CyREST POST:', importNetworkUrl)
-  
-    return fetch(importNetworkUrl, {
-      method: METHOD_POST,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(cx)
-    })}).catch(error => { console.log(error)});
+        CYREST_BASE_URL + ':' + cyRESTPort + '/cyndex2/v1/networks/cx'
+      console.log('Calling CyREST POST:', importNetworkUrl)
+
+      return fetch(importNetworkUrl, {
+        method: METHOD_POST,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cx)
+      })
+    }).catch(error => { console.log(error) });
   }
 
-  const { 
+  const {
     startCyRestPollingFunction = defaultPollingStart,
     stopCyRestPollingFunction = defaultPollingStop,
     getAvailable = defaultGetAvailable,
@@ -106,7 +100,7 @@ const OpenInCytoscapeButton = props => {
   } = props
 
   useEffect(() => {
-      typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
+    typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
     return () => {
       typeof (stopCyRestPollingFunction) === typeof (Function) && stopCyRestPollingFunction();
     }
@@ -121,20 +115,17 @@ const OpenInCytoscapeButton = props => {
         title="Open this network in Cytoscape Desktop"
         placement="bottom"
       >
-        <span>
-          <BootstrapButton
-            className={classes.button}
-            variant={ variant }
-            disabled={!getAvailable()}
-            onClick={importNetwork}
-            size={size}
-           
-          > 
-            <Icon >
-              <img className={classes.buttonIcon} src= { !getAvailable() ? logoDisabled : logo }/>
-            </Icon>
-          </BootstrapButton>
-          </span>
+        <Button
+          className={classes.button}
+          variant={variant}
+          disabled={!getAvailable()}
+          onClick={importNetwork}
+          size={size}
+        >
+          <Icon >
+            <img className={classes.buttonIcon} src={!getAvailable() ? logoDisabled : logo} />
+          </Icon>
+        </Button>
       </Tooltip>
 
     </React.Fragment>

@@ -10,7 +10,7 @@ const App = () => {
   return <div>
       
       <Button
-        variant="contained"
+        variant="outlined"
         color="primary"
         size="small"
       >
@@ -18,7 +18,7 @@ const App = () => {
       </Button>
       <OpenInCytoscapeButton variant="outlined" size="small" />
        <Button
-        variant="contained"
+        variant="outlined"
         color="primary"
         size="medium"
       >
@@ -26,7 +26,7 @@ const App = () => {
       </Button>
       <OpenInCytoscapeButton variant="outlined"  size="medium"/>
       <Button
-        variant="contained"
+        variant="outlined"
         color="primary"
         size="large"
       >
