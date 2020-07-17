@@ -7,15 +7,29 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 import BootstrapButton from '../BootstrapButton'
 
+import SvgIcon from '@material-ui/core/SvgIcon';
+
+
+
+function CytoscapeIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path 
+        d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" 
+      />
+    </SvgIcon>
+  );
+}
 
 const styles = theme => ({
   buttonIcon: {
-    height: '2em'
+    //height: '2em'
   },
   button: {
-    height: '3em',
-    width: '4.3em',
-    minWidth: '4.3em'
+    color: '#EA9123',
+    //height: '3em',
+    //width: '4.3em',
+    //minWidth: '4.3em'
   }
 })
 
@@ -115,12 +129,10 @@ const OpenInCytoscapeButton = props => {
             variant={ variant }
             disabled={!getAvailable()}
             onClick={importNetwork}
-          >
-            <img
-              alt="Cytoscape logo"
-              src={!getAvailable() ? logoDisabled : logo}
-              className={classes.buttonIcon}
-            />
+            //endIcon = {!getAvailable() ? logoDisabled : logo}
+            
+          > 
+            <CytoscapeIcon />
           </BootstrapButton>
           </span>
       </Tooltip>
