@@ -45,12 +45,16 @@
     "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "ndex-client": "file:../ndex-js-client/"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "@material-ui/core": "^4.11.0"
-  }
+  },
+  "bundledDependencies" : [
+    "ndex-client"
+  ]
 }

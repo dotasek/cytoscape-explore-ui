@@ -5,6 +5,8 @@ import logo from '../assets/images/cytoscape-logo.svg'
 import logoDisabled from '../assets/images/cytoscape-logo-mono-light.svg'
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
+import ndexClient from 'ndex-client';
+
 
 import { fade } from '@material-ui/core/styles/colorManipulator'
 
@@ -25,26 +27,21 @@ const styles = theme => ({
 
 const OpenInCytoscapeButton = props => {
 
-  const status = cyRESTPort => {
-    const statusUrl = CYREST_BASE_URL + ':' + cyRESTPort + '/v1'
-
-    return fetch(statusUrl, {
-      method: METHOD_GET
-    })
-  }
+  const cyndex = new ndexClient.CyNDEx();
 
   let pollCyREST = false;
   const [cyRESTAvailable, setCyRESTAvailable] = useState(false);
 
   function refresh() {
     if (cyRESTPollingActive) {
-      status(1234).then(
-        response => response.json()
-      ).then(data => {
-        setCyRESTAvailable(true);
-      }).catch((error) => {
-        setCyRESTAvailable(false);
-      });
+      cyndex.getCyNDExStatus().then(
+        response => {  console.log(JSON.stringify(response.data));
+          setCyRESTAvailable(true);
+        }, 
+        err => {
+          setCyRESTAvailable(false);
+          //return console.log(err);
+        });
 
       setTimeout(refresh, 5000);
     }
@@ -77,15 +74,8 @@ const OpenInCytoscapeButton = props => {
         CYREST_BASE_URL + ':' + cyRESTPort + '/cyndex2/v1/networks/cx'
       console.log('Calling CyREST POST:', importNetworkUrl)
 
-      return fetch(importNetworkUrl, {
-        method: METHOD_POST,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(cx)
-      })
-    }).catch(error => { console.log(error) });
+      return cyndex.postCXNetworkToCytoscape(cx);
+    },error => { console.log(error) });
   }
 
   const {
