@@ -27,7 +27,7 @@ const styles = theme => ({
 
 const OpenInCytoscapeButton = props => {
 
-  const cyndex = new ndexClient.CyNDEx();
+  
 
   let pollCyREST = false;
   const [cyRESTAvailable, setCyRESTAvailable] = useState(false);
@@ -35,12 +35,11 @@ const OpenInCytoscapeButton = props => {
   function refresh() {
     if (cyRESTPollingActive) {
       cyndex.getCyNDExStatus().then(
-        response => {  console.log(JSON.stringify(response.data));
+        response => {  
           setCyRESTAvailable(true);
         }, 
         err => {
           setCyRESTAvailable(false);
-          //return console.log(err);
         });
 
       setTimeout(refresh, 5000);
@@ -70,10 +69,6 @@ const OpenInCytoscapeButton = props => {
 
   const importNetwork = () => {
     fetchCX().then(cx => {
-      const importNetworkUrl =
-        CYREST_BASE_URL + ':' + cyRESTPort + '/cyndex2/v1/networks/cx'
-      console.log('Calling CyREST POST:', importNetworkUrl)
-
       return cyndex.postCXNetworkToCytoscape(cx);
     },error => { console.log(error) });
   }
@@ -89,8 +84,10 @@ const OpenInCytoscapeButton = props => {
     fetchCX
   } = props
 
+  const cyndex = new ndexClient.CyNDEx();
+
   useEffect(() => {
-    typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
+      typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
     return () => {
       typeof (stopCyRestPollingFunction) === typeof (Function) && stopCyRestPollingFunction();
     }
