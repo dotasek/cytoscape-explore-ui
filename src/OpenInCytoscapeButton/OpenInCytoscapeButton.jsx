@@ -32,12 +32,10 @@ const styles = theme => ({
     height: '100%',
     width: '100%'
   }
- 
+
 })
 
 const OpenInCytoscapeButton = props => {
-
-  
 
   let pollCyREST = false;
   const [cyRESTAvailable, setCyRESTAvailable] = useState(false);
@@ -45,9 +43,9 @@ const OpenInCytoscapeButton = props => {
   function refresh() {
     if (cyRESTPollingActive) {
       cyndex.getCyNDExStatus().then(
-        response => {  
+        response => {
           setCyRESTAvailable(true);
-        }, 
+        },
         err => {
           setCyRESTAvailable(false);
         });
@@ -78,9 +76,21 @@ const OpenInCytoscapeButton = props => {
   const METHOD_GET = 'GET'
 
   const importNetwork = () => {
-    fetchCX().then(cx => {
-      return cyndex.postCXNetworkToCytoscape(cx);
-    },error => { console.log(error) });
+    if (ndexNetworkProperties) {
+      const username = ndexNetworkProperties.accessKey || ndexNetworkProperties.idToken ? undefined : ndexNetworkProperties.username;
+      const password = ndexNetworkProperties.accessKey || ndexNetworkProperties.idToken ? undefined : ndexNetworkProperties.password;
+      if (username && password) {
+        cyndex.setBasicAuth(username, password);
+      }
+      const accessKey = ndexNetworkProperties.accessKey;
+      const idToken = ndexNetworkProperties.idToken;
+      cyndex.postNDExNetworkToCytoscape(ndexNetworkProperties.uuid, accessKey, idToken);
+    } else {
+      fetchCX().then(cx => {
+        return cyndex.postCXNetworkToCytoscape(cx);
+      }, error => { console.log(error) });
+    }
+
   }
 
   const {
@@ -88,17 +98,19 @@ const OpenInCytoscapeButton = props => {
     stopCyRestPollingFunction = defaultPollingStop,
     getAvailable = defaultGetAvailable,
     cyRESTPollingActive = defaultGetPollingActive,
-    cyRESTPort = 1234,
+    cyRESTPort,
     variant,
     size,
-    fetchCX
+    fetchCX,
+    ndexNetworkProperties
   } = props
 
-  const cyndex = new ndexClient.CyNDEx();
+
+  const cyndex = new ndexClient.CyNDEx(cyRESTPort);
 
   useEffect(() => {
-      console.log("size: " + size);
-      typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
+    console.log("networkproperties: " + ndexNetworkProperties);
+    typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
     return () => {
       typeof (stopCyRestPollingFunction) === typeof (Function) && stopCyRestPollingFunction();
     }
@@ -107,10 +119,10 @@ const OpenInCytoscapeButton = props => {
   const { classes } = props
 
   const iconClassName = (size) => {
-   switch(size) {
-    case 'small' : return classes.iconSmall;
-    case 'large' : return classes.iconLarge;
-    default:return classes.iconMedium;
+    switch (size) {
+      case 'small': return classes.iconSmall;
+      case 'large': return classes.iconLarge;
+      default: return classes.iconMedium;
     }
   }
 
@@ -128,7 +140,7 @@ const OpenInCytoscapeButton = props => {
           onClick={importNetwork}
           size={size}
         >
-          <Icon className={ iconClassName(size)} >
+          <Icon className={iconClassName(size)} >
             <img className={classes.buttonIcon} src={!getAvailable() ? logoDisabled : logo} />
           </Icon>
         </Button>
