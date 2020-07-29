@@ -19,10 +19,20 @@ const styles = theme => ({
     },
     'line-height': 0
   },
+  iconSmall: {
+    height: '22px'
+  },
+  iconMedium: {
+    height: '24px'
+  },
+  iconLarge: {
+    height: '26px'
+  },
   buttonIcon: {
     height: '100%',
-    width: '100%',
+    width: '100%'
   }
+ 
 })
 
 const OpenInCytoscapeButton = props => {
@@ -87,6 +97,7 @@ const OpenInCytoscapeButton = props => {
   const cyndex = new ndexClient.CyNDEx();
 
   useEffect(() => {
+      console.log("size: " + size);
       typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
     return () => {
       typeof (stopCyRestPollingFunction) === typeof (Function) && stopCyRestPollingFunction();
@@ -94,6 +105,14 @@ const OpenInCytoscapeButton = props => {
   }, [])
 
   const { classes } = props
+
+  const iconClassName = (size) => {
+   switch(size) {
+    case 'small' : return classes.iconSmall;
+    case 'large' : return classes.iconLarge;
+    default:return classes.iconMedium;
+    }
+  }
 
   return (
     <React.Fragment>
@@ -109,7 +128,7 @@ const OpenInCytoscapeButton = props => {
           onClick={importNetwork}
           size={size}
         >
-          <Icon >
+          <Icon className={ iconClassName(size)} >
             <img className={classes.buttonIcon} src={!getAvailable() ? logoDisabled : logo} />
           </Icon>
         </Button>
