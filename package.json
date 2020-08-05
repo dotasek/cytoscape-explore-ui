@@ -46,13 +46,14 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
-    "ndex-client": "file:../ndex-js-client/"
+    "ndex-client": "git://github.com/ndexbio/ndex-js-client"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "@material-ui/core": "^4.11.0"
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1"
   },
   "bundledDependencies" : [
     "ndex-client"

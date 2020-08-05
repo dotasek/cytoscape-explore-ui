@@ -4,3 +4,6 @@ import styles from './styles.module.css'
 
 export { default as OpenInCytoscapeButton } from './OpenInCytoscapeButton';
 export * from './OpenInCytoscapeButton';
+
+export { default as NDExSignInButton } from './NDExSignInButton';
+export * from './NDExSignInButton';

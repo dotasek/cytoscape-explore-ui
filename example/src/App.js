@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { OpenInCytoscapeButton } from 'cytoscape-explore-ui'
+import { NDExSignInButton } from 'cytoscape-explore-ui'
+import Typography from '@material-ui/core/Typography'
 import 'cytoscape-explore-ui/dist/index.css'
 
 
@@ -40,32 +42,41 @@ const App = () => {
   }
 
   return <div>
-
+    <Typography variant="h6" gutterBottom>
+        OpenInCytoscapeButton
+      </Typography>
     <Button
       variant="outlined"
       color="primary"
       size="small"
     >
-      Save
+      SML
       </Button>
     <OpenInCytoscapeButton variant="outlined" size="small" fetchCX={fetchCX} />
+    &nbsp;
     <Button
       variant="outlined"
       color="primary"
       size="medium"
     >
-      Save
+      MED
       </Button>
     <OpenInCytoscapeButton variant="outlined" size="medium" fetchCX={fetchCX} />
+    &nbsp;
     <Button
       variant="outlined"
       color="primary"
       size="large"
     >
-      Save
+      LRG
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="large" fetchCX={fetchCX} />
+    <OpenInCytoscapeButton variant="outlined" size="large" fetchCX={fetchCX} /><br/>
+
     <br />
+    <Typography variant="h6" gutterBottom>
+        OpenInCytoscapeButton with Basic Authentication
+      </Typography>
+    
     <TextField
           id="uuid"
           label="UUID"
@@ -87,8 +98,36 @@ const App = () => {
           onChange= {handleChange}
           type="password"
           value= {ndexNetworkProperties.password}
-    /><br />
-    <OpenInCytoscapeButton ndexNetworkProperties={ndexNetworkProperties}></OpenInCytoscapeButton>
+    /><br /><br />
+    <OpenInCytoscapeButton variant="outlined" ndexNetworkProperties={ndexNetworkProperties}></OpenInCytoscapeButton>
+    <br /><br />
+    <Typography variant="h6" gutterBottom>
+        NDEx Login Button
+      </Typography>
+    <Button
+      variant="outlined"
+      color="primary"
+      size="small"
+    >SML
+    </Button>
+    <NDExSignInButton variant="outlined" size="small" />
+    &nbsp;
+    <Button
+      variant="outlined"
+      color="primary"
+      size="medium"
+    >MED
+    </Button>
+    <NDExSignInButton variant="outlined" size="medium" />
+    &nbsp;
+    <Button
+      variant="outlined"
+      color="primary"
+      size="large"
+    >LRG
+    </Button>
+    <NDExSignInButton variant="outlined" size="large" />
   </div>
+  
 }
 export default App
