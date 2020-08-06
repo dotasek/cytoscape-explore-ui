@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ndexClient from 'ndex-client';
-
+import NdexLoginDialog from './NdexLoginDialog'
 
 const styles = theme => ({
   button: {
@@ -34,11 +34,40 @@ const styles = theme => ({
 
 })
 
+const DEFAULT_HANDLER = loginState => {
+  // Default callback function for login status change
+  console.warn('Default handler: NDEx login state updated', loginState)
+
+  // Add actual handler here...
+}
+
+
 const NDExSignInButton = props => {
 
- 
-  const [cyRESTAvailable, setCyRESTAvailable] = useState(false);
+  const { classes } = props;
 
+  const { ndexServer, onLoginStateUpdated } = props
+
+  const defaultIconComponent = (
+    <img alt="NDEx logo" src={logo} className={classes.buttonIcon} />
+  )
+
+  let onUpdate = DEFAULT_HANDLER
+  if (onLoginStateUpdated !== null && onLoginStateUpdated !== undefined) {
+    onUpdate = onLoginStateUpdated
+  }
+
+  const [isOpen, setOpen] = useState(false)
+  const [isLogin, setLogin] = useState(false)
+  const [icon, setButtonIcon] = useState(defaultIconComponent)
+
+  const setIcon = iconComponent => {
+    setButtonIcon(iconComponent !== null ? iconComponent : defaultIconComponent)
+  }
+
+  const setDialogState = dialogState => {
+    setOpen(dialogState)
+  }
   const defaultSignInAction = () => {
   
   };
@@ -46,38 +75,6 @@ const NDExSignInButton = props => {
   const defaultSignInStatus = () => {
     return false;
   };
-
-  
-
-  const defaultGetAvailable = () => {
-    return cyRESTAvailable
-  };
-
-  const defaultGetPollingActive = () => {
-    return pollCyREST;
-  }
-
-  const CYREST_BASE_URL = 'http://127.0.0.1'
-  const METHOD_POST = 'POST';
-  const METHOD_GET = 'GET'
-
-  const importNetwork = () => {
-    if (ndexNetworkProperties) {
-      const username = ndexNetworkProperties.accessKey || ndexNetworkProperties.idToken ? undefined : ndexNetworkProperties.username;
-      const password = ndexNetworkProperties.accessKey || ndexNetworkProperties.idToken ? undefined : ndexNetworkProperties.password;
-      if (username && password) {
-        cyndex.setBasicAuth(username, password);
-      }
-      const accessKey = ndexNetworkProperties.accessKey;
-      const idToken = ndexNetworkProperties.idToken;
-      cyndex.postNDExNetworkToCytoscape(ndexNetworkProperties.uuid, accessKey, idToken);
-    } else {
-      fetchCX().then(cx => {
-        return cyndex.postCXNetworkToCytoscape(cx);
-      }, error => { console.log(error) });
-    }
-
-  }
 
   const getAvailable = () => {
     return true;
@@ -90,7 +87,7 @@ const NDExSignInButton = props => {
     size
   } = props
 
-  const { classes } = props
+ 
 
   const iconClassName = (size) => {
     switch (size) {
@@ -110,14 +107,21 @@ const NDExSignInButton = props => {
         <Button
           className={classes.button}
           variant={variant}
-          onClick={signInAction}
+          onClick={() => setDialogState(true)}
           size={size}
         >
           <AccountCircleIcon fontSize={size} className={classes.buttonIcon}/>
          
         </Button>
       </Tooltip>
-
+      <NdexLoginDialog
+        setIcon={setIcon}
+        setDialogState={setDialogState}
+        isOpen={isOpen}
+        setIsLogin={setLogin}
+        ndexServer={ndexServer}
+        onLoginStateUpdated={onUpdate}
+      />
     </React.Fragment>
   )
 }
