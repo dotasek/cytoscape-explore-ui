@@ -46,7 +46,8 @@ const NDExSignInButton = props => {
 
   const { classes } = props;
 
-  const { ndexServer, onLoginStateUpdated } = props
+  const { ndexServer = 'http://public.ndexbio.org'
+    , onLoginStateUpdated } = props
 
   const defaultIconComponent = (
     <img alt="NDEx logo" src={logo} className={classes.buttonIcon} />
@@ -69,7 +70,7 @@ const NDExSignInButton = props => {
     setOpen(dialogState)
   }
   const defaultSignInAction = () => {
-  
+    console.log("")
   };
 
   const defaultSignInStatus = () => {
@@ -110,7 +111,7 @@ const NDExSignInButton = props => {
           onClick={() => setDialogState(true)}
           size={size}
         >
-          <AccountCircleIcon fontSize={size} className={classes.buttonIcon}/>
+          <AccountCircleIcon fontSize={size} className={iconClassName(size)}/>
          
         </Button>
       </Tooltip>
