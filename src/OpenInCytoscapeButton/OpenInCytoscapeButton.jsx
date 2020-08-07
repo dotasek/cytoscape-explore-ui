@@ -41,6 +41,7 @@ const OpenInCytoscapeButton = props => {
   const [cyRESTAvailable, setCyRESTAvailable] = useState(false);
 
   function refresh() {
+    const cyndex = new ndexClient.CyNDEx(cyRESTPort);
     if (cyRESTPollingActive) {
       cyndex.getCyNDExStatus().then(
         response => {
@@ -76,7 +77,10 @@ const OpenInCytoscapeButton = props => {
   const METHOD_GET = 'GET'
 
   const importNetwork = () => {
+    const cyndex = new ndexClient.CyNDEx(cyRESTPort);
     if (ndexNetworkProperties) {
+      const ndexCredentials = getNDExCredentials();
+      console.log("import network ndex credentials: " + JSON.stringify(ndexCredentials));
       const username = ndexNetworkProperties.accessKey || ndexNetworkProperties.idToken ? undefined : ndexNetworkProperties.username;
       const password = ndexNetworkProperties.accessKey || ndexNetworkProperties.idToken ? undefined : ndexNetworkProperties.password;
       if (username && password) {
@@ -102,11 +106,12 @@ const OpenInCytoscapeButton = props => {
     variant,
     size,
     fetchCX,
-    ndexNetworkProperties
+    ndexNetworkProperties,
+    getNDExCredentials
   } = props
 
 
-  const cyndex = new ndexClient.CyNDEx(cyRESTPort);
+  
 
   useEffect(() => {
     console.log("networkproperties: " + ndexNetworkProperties);
@@ -132,7 +137,7 @@ const OpenInCytoscapeButton = props => {
         disableFocusListener
         title="Open this network in Cytoscape Desktop"
         placement="bottom"
-      >
+      > 
         <Button
           className={classes.button}
           variant={variant}

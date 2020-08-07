@@ -18,7 +18,17 @@ const App = () => {
     password: 'ismbdemo2020'
   };
 
+  const loginStateUpdated = loginState => {
+    console.log("Update in login state: " + JSON.stringify(loginState));
+    setNdexCredentials(loginState);
+  }
+
   const [ndexNetworkProperties, setNdexNetworkProperties] = useState(DEFAULT_NETWORK_PROPERTIES);
+  const [ndexCredentials, setNdexCredentials] = useState({});
+
+  function getNdexCredentials() {
+    return ndexCredentials;
+  };
 
   const handleChange = (event) => {
     const newProperties = Object.assign({}, ndexNetworkProperties);
@@ -52,7 +62,7 @@ const App = () => {
     >
       SML
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="small" fetchCX={fetchCX} />
+    <OpenInCytoscapeButton variant="outlined" size="small" fetchCX={fetchCX} getNDExCredentials={() => getNdexCredentials()}/>
     &nbsp;
     <Button
       variant="outlined"
@@ -61,7 +71,7 @@ const App = () => {
     >
       MED
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="medium" fetchCX={fetchCX} />
+    <OpenInCytoscapeButton variant="outlined" size="medium" fetchCX={fetchCX} getNDExCredentials={() => getNdexCredentials()}/>
     &nbsp;
     <Button
       variant="outlined"
@@ -70,7 +80,7 @@ const App = () => {
     >
       LRG
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="large" fetchCX={fetchCX} /><br/>
+    <OpenInCytoscapeButton variant="outlined" size="large" fetchCX={fetchCX} getNDExCredentialss={() => getNdexCredentials()}/><br/>
 
     <br />
     <Typography variant="h6" gutterBottom>
@@ -99,7 +109,7 @@ const App = () => {
           type="password"
           value= {ndexNetworkProperties.password}
     /><br /><br />
-    <OpenInCytoscapeButton variant="outlined" ndexNetworkProperties={ndexNetworkProperties}></OpenInCytoscapeButton>
+    <OpenInCytoscapeButton variant="outlined" ndexNetworkProperties={ndexNetworkProperties} getNDExCredentials={() => getNdexCredentials()}></OpenInCytoscapeButton>
     <br /><br />
     <Typography variant="h6" gutterBottom>
         NDEx Login Button
@@ -110,7 +120,7 @@ const App = () => {
       size="small"
     >SML
     </Button>
-    <NDExSignInButton variant="outlined" size="small" />
+    <NDExSignInButton variant="outlined" size="small" onLoginStateUpdated={loginStateUpdated}/>
     &nbsp;
     <Button
       variant="outlined"
@@ -118,7 +128,7 @@ const App = () => {
       size="medium"
     >MED
     </Button>
-    <NDExSignInButton variant="outlined" size="medium" />
+    <NDExSignInButton variant="outlined" size="medium" onLoginStateUpdated={loginStateUpdated}/>
     &nbsp;
     <Button
       variant="outlined"
@@ -126,7 +136,7 @@ const App = () => {
       size="large"
     >LRG
     </Button>
-    <NDExSignInButton variant="outlined" size="large" />
+    <NDExSignInButton variant="outlined" size="large" onLoginStateUpdated={loginStateUpdated}/>
   </div>
   
 }

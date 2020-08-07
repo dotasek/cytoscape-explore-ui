@@ -111,7 +111,7 @@ const NDExSignInButton = props => {
           onClick={() => setDialogState(true)}
           size={size}
         >
-          <AccountCircleIcon fontSize={size} className={iconClassName(size)}/>
+          <AccountCircleIcon className={iconClassName(size)}/>
          
         </Button>
       </Tooltip>
