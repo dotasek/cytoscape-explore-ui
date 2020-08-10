@@ -7,3 +7,5 @@ export * from './OpenInCytoscapeButton';
 
 export { default as NDExSignInButton } from './NDExSignIn';
 export * from './NDExSignIn';
+
+export { CyNDExProvider as CyNDExProvider } from './CyNDExContext';

@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 import ndexClient from 'ndex-client';
 
+import { useCyNDExValue } from '../CyNDExContext'
 
 import { fade } from '@material-ui/core/styles/colorManipulator'
 
@@ -39,6 +40,9 @@ const OpenInCytoscapeButton = props => {
 
   let pollCyREST = false;
   const [cyRESTAvailable, setCyRESTAvailable] = useState(false);
+  
+  const [{ available, port }, dispatch ] = useCyNDExValue();
+
 
   function refresh() {
     const cyndex = new ndexClient.CyNDEx(cyRESTPort);
@@ -115,6 +119,9 @@ const OpenInCytoscapeButton = props => {
 
   useEffect(() => {
     console.log("networkproperties: " + ndexNetworkProperties);
+    console.log("context available: " + available);
+    console.log("context port: " + port);
+
     typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
     return () => {
       typeof (stopCyRestPollingFunction) === typeof (Function) && stopCyRestPollingFunction();

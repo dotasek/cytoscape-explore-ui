@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { OpenInCytoscapeButton } from 'cytoscape-explore-ui'
 import { NDExSignInButton } from 'cytoscape-explore-ui'
+import { CyNDExProvider } from 'cytoscape-explore-ui'
 import Typography from '@material-ui/core/Typography'
 import 'cytoscape-explore-ui/dist/index.css'
 
@@ -51,7 +52,22 @@ const App = () => {
       })
   }
 
-  return <div>
+ 
+  
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case 'setAvailable':
+        return {
+          ...state,
+          theme: action.newTheme
+        };
+        
+      default:
+        return state;
+    }
+  };
+
+  return <CyNDExProvider port='1234' reducer={reducer}>
     <Typography variant="h6" gutterBottom>
         OpenInCytoscapeButton
       </Typography>
@@ -137,7 +153,7 @@ const App = () => {
     >LRG
     </Button>
     <NDExSignInButton variant="outlined" size="large" onLoginStateUpdated={loginStateUpdated}/>
-  </div>
+  </CyNDExProvider>
   
 }
 export default App
