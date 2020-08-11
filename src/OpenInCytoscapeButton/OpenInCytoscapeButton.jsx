@@ -41,7 +41,7 @@ const OpenInCytoscapeButton = props => {
   let pollCyREST = false;
   const [cyRESTAvailable, setCyRESTAvailable] = useState(false);
   
-  const [{ available, port }, dispatch ] = useCyNDExValue();
+  //const [{ available, port }, dispatch ] = useCyNDExValue();
 
 
   function refresh() {
@@ -119,8 +119,8 @@ const OpenInCytoscapeButton = props => {
 
   useEffect(() => {
     console.log("networkproperties: " + ndexNetworkProperties);
-    console.log("context available: " + available);
-    console.log("context port: " + port);
+    //console.log("context available: " + available);
+    //console.log("context port: " + port);
 
     typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
     return () => {

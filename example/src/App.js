@@ -52,22 +52,7 @@ const App = () => {
       })
   }
 
- 
-  
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case 'setAvailable':
-        return {
-          ...state,
-          theme: action.newTheme
-        };
-        
-      default:
-        return state;
-    }
-  };
-
-  return <CyNDExProvider port='1234' reducer={reducer}>
+  return <CyNDExProvider port='1234' >
     <Typography variant="h6" gutterBottom>
         OpenInCytoscapeButton
       </Typography>

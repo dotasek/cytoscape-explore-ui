@@ -1,34 +1,74 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useMemo } from 'react';
 
-export const CyNDExContext = createContext();
+import ndexClient from 'ndex-client';
+import { FormatListNumberedRtlOutlined } from '@material-ui/icons';
 
-export const CyNDExProvider = ({ reducer, port, children }) => (
-  <CyNDExContext.Provider value={useReducer(reducer, {
-    available: 'spoon',
-    port: port
-  })}>
+export const CyNDExContext = createContext({ available: false, port: 1234 });
+
+export const CyNDExProvider = ({  port, children }) => {
+  let initialState = {
+    available: false,
+    port: 1234
+  };
+  
+  const [state, dispatch] = useReducer((state, action) => {
+    switch(action.type) {
+      case 'setAvailable':
+      
+        return {
+          available: true,
+          port: 1234
+        };
+      case 'setUnavailable':
+         
+          return {
+            available: false,
+            port: 1234
+          };;
+      default:
+        throw new Error();
+    };
+  }, initialState);
+
+  let pollCyREST = false;
+
+  function refresh() {
+    const cyndex = new ndexClient.CyNDEx(port);
+    if (pollCyREST) {
+      cyndex.getCyNDExStatus().then(
+        response => {
+          console.log("setAvailable");
+          dispatch({ type: "setAvailable"})
+        },
+        err => {
+          console.log("setUnavailable");
+          dispatch({ type: "setUnavailable" })
+        });
+
+      setTimeout(refresh, 5000);
+    }
+  }
+
+  const pollingStart = () => {
+    pollCyREST = true;
+    setTimeout(refresh, 5000);
+  };
+
+  const pollingStop = () => {
+    pollCyREST = false;
+  };
+
+  useEffect(() => {
+      pollingStart();
+    return () => {
+       pollingStop();
+    }
+  }, [])
+
+  return (
+  <CyNDExContext.Provider value={{state, dispatch}} >
     {children}
-  </CyNDExContext.Provider>
-);
+  </CyNDExContext.Provider>)
+}
 
 export const useCyNDExValue = () => useContext(CyNDExContext);
-
-export const useInterval = (callback, delay) => {
-  const savedCallback = useRef();
-
-  // Remember the latest function.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-}
