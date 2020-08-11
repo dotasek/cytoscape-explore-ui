@@ -22,28 +22,19 @@ const App = () => {
 
   const loginStateUpdated = loginState => {
     console.log("Update in login state: " + JSON.stringify(loginState));
-    setNdexCredentials(loginState);
   }
 
   const [ndexNetworkProperties, setNdexNetworkProperties] = useState(DEFAULT_NETWORK_PROPERTIES);
-  const [ndexCredentials, setNdexCredentials] = useState({});
-
-  function getNdexCredentials() {
-    return ndexCredentials;
-  };
 
   const handleChange = (event) => {
     const newProperties = Object.assign({}, ndexNetworkProperties);
     switch (event.target.id) {
       case 'uuid': newProperties['uuid'] = event.target.value; break;
-      case 'username': newProperties['username'] = event.target.value; break;
-      case 'password': newProperties['password'] = event.target.value; break;
       default: break;
     }
     setNdexNetworkProperties(
       newProperties
     );
-
   }
 
   const fetchCX = () => {
@@ -65,7 +56,7 @@ const App = () => {
     >
       SML
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="small" fetchCX={fetchCX} getNDExCredentials={() => getNdexCredentials()} />
+    <OpenInCytoscapeButton variant="outlined" size="small" fetchCX={fetchCX} />
     &nbsp;
     <Button
       variant="outlined"
@@ -74,7 +65,7 @@ const App = () => {
     >
       MED
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="medium" fetchCX={fetchCX} getNDExCredentials={() => getNdexCredentials()} />
+    <OpenInCytoscapeButton variant="outlined" size="medium" fetchCX={fetchCX} />
     &nbsp;
     <Button
       variant="outlined"
@@ -83,7 +74,7 @@ const App = () => {
     >
       LRG
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="large" fetchCX={fetchCX} getNDExCredentialss={() => getNdexCredentials()} /><br />
+    <OpenInCytoscapeButton variant="outlined" size="large" fetchCX={fetchCX} /><br />
 
     <br />
     <Typography variant="h6" gutterBottom>
@@ -97,22 +88,8 @@ const App = () => {
       onChange={handleChange}
       value={ndexNetworkProperties.uuid}
     /><br />
-    <TextField
-      id="username"
-      label="User Name"
-      autoComplete="username"
-      onChange={handleChange}
-      value={ndexNetworkProperties.username}
-    /><br />
-    <TextField
-      id="password"
-      label="Password"
-      autoComplete=""
-      onChange={handleChange}
-      type="password"
-      value={ndexNetworkProperties.password}
-    /><br /><br />
-    <OpenInCytoscapeButton variant="outlined" ndexNetworkProperties={ndexNetworkProperties} getNDExCredentials={() => getNdexCredentials()}></OpenInCytoscapeButton>
+    <br />
+    <OpenInCytoscapeButton variant="outlined" ndexNetworkProperties={ndexNetworkProperties}></OpenInCytoscapeButton>
     <br /><br />
     <Typography variant="h6" gutterBottom>
       NDEx Login Button

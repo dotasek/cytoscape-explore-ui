@@ -8,7 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import ndexClient from 'ndex-client';
 
 import { useCyNDExValue } from '../CyNDExContext'
-
+import { useNDExAccountValue } from '../NDExAccountContext'
 
 import { fade } from '@material-ui/core/styles/colorManipulator'
 
@@ -39,20 +39,21 @@ const styles = theme => ({
 
 const OpenInCytoscapeButton = props => {
 
-   
   const cyNDExValue = useCyNDExValue();
   const cyRESTAvailable = cyNDExValue.state.available;
   const cyRESTPort = cyNDExValue.state.port;
 
+  const [{ ndexServerURL, loginInfo }, dispatch] = useNDExAccountValue();
+
   const importNetwork = () => {
     const cyndex = new ndexClient.CyNDEx(cyRESTPort);
     if (ndexNetworkProperties) {
-      const ndexCredentials = getNDExCredentials();
-      console.log("import network ndex credentials: " + JSON.stringify(ndexCredentials));
-      const username = ndexNetworkProperties.accessKey || ndexNetworkProperties.idToken ? undefined : ndexNetworkProperties.username;
-      const password = ndexNetworkProperties.accessKey || ndexNetworkProperties.idToken ? undefined : ndexNetworkProperties.password;
-      if (username && password) {
-        cyndex.setBasicAuth(username, password);
+       if (loginInfo) {
+        if (loginInfo.isGoogle) {
+          
+        } else {
+          cyndex.setBasicAuth(loginInfo.loginDetails.id, loginInfo.loginDetails.password);
+        }
       }
       const accessKey = ndexNetworkProperties.accessKey;
       const idToken = ndexNetworkProperties.idToken;
@@ -69,8 +70,7 @@ const OpenInCytoscapeButton = props => {
     variant,
     size,
     fetchCX,
-    ndexNetworkProperties,
-    getNDExCredentials
+    ndexNetworkProperties
   } = props
 
   const { classes } = props
