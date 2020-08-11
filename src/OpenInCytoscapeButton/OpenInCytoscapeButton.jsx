@@ -9,6 +9,7 @@ import ndexClient from 'ndex-client';
 
 import { useCyNDExValue } from '../CyNDExContext'
 
+
 import { fade } from '@material-ui/core/styles/colorManipulator'
 
 const styles = theme => ({

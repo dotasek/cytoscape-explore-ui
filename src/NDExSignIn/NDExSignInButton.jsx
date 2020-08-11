@@ -46,6 +46,8 @@ const NDExSignInButton = props => {
 
   const { classes } = props;
 
+
+
   const { ndexServer = 'http://public.ndexbio.org'
     , onLoginStateUpdated } = props
 

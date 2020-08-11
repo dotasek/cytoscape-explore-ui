@@ -9,3 +9,4 @@ export { default as NDExSignInButton } from './NDExSignIn';
 export * from './NDExSignIn';
 
 export { CyNDExProvider as CyNDExProvider } from './CyNDExContext';
+export { NDExAccountProvider as NDExAccountProvider } from './NDExAccountContext';

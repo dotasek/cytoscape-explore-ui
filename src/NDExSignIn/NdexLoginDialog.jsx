@@ -17,6 +17,8 @@ import { makeStyles } from '@material-ui/styles'
 
 import NdexLogo from './assets/images/ndex-logo.svg'
 
+import { useNDExAccountValue } from '../NDExAccountContext'
+
 const DEFAULT_TITLE = 'Sign in to your NDEx Account'
 const SUBTITLE = 'Choose one of the following sign in methods:'
 const useStyles = makeStyles({
@@ -53,7 +55,8 @@ const useStyles = makeStyles({
 const NdexLoginDialog = props => {
   const classes = useStyles()
 
-  const [login, setLogin] = useState(null)
+  const [{ ndexServerURL, loginInfo }, dispatch] = useNDExAccountValue();
+  
   const [errorMessage, setErrorMessage] = useState('')
 
   // Open/Close state is always passed from parent component
@@ -72,7 +75,10 @@ const NdexLoginDialog = props => {
 
   const onLogout = () => {
     console.log('Logout:')
-    setLogin(null)
+    dispatch({
+      type: 'setLoginInfo',
+      loginInfo: null
+    })
     setIsLogin(false)
     setIcon(null)
     onLoginStateUpdated(null)
@@ -91,7 +97,11 @@ const NdexLoginDialog = props => {
   }
 
   const onSuccessLogin = (loginInfo, userImage) => {
-    setLogin(loginInfo)
+    dispatch({
+      type: 'setLoginInfo',
+      loginInfo: loginInfo
+    })
+    //setLogin(loginInfo)
     setIsLogin(true)
     setIcon(<Avatar className={classes.userIcon} src={userImage}></Avatar>)
     onLoginStateUpdated(loginInfo)
@@ -103,17 +113,16 @@ const NdexLoginDialog = props => {
   }
 
   const getContent = () => {
-    if (login !== null) {
-      console.log('user info:', login)
-
+    if (loginInfo !== null) {
+     
       let userName = ''
       let userImage = null
-      if (login.isGoogle) {
-        userName = login.loginDetails.profileObj.name
-        userImage = login.loginDetails.profileObj.imageUrl
+      if (loginInfo.isGoogle) {
+        userName = loginInfo.loginDetails.profileObj.name
+        userImage = loginInfo.loginDetails.profileObj.imageUrl
       } else {
-        userName = login.loginDetails.fullName
-        userImage = login.loginDetails.image
+        userName = loginInfo.loginDetails.fullName
+        userImage = loginInfo.loginDetails.image
       }
 
       return (
@@ -142,7 +151,7 @@ const NdexLoginDialog = props => {
 
   return (
     <Dialog className={classes.root} open={isOpen}>
-      {login !== null ? (
+      {loginInfo !== null ? (
         <div />
       ) : (
         <DialogTitle disableTypography={true} className={classes.title}>
