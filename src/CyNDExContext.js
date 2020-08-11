@@ -7,20 +7,20 @@ export const CyNDExContext = createContext({ available: false, port: 1234 });
 export const CyNDExProvider = ({ port, children }) => {
   let initialState = {
     available: false,
-    port: 1234
+    port: port
   };
   
   const [state, dispatch] = useReducer((state, action) => {
     switch(action.type) {
       case 'setAvailable':
         return {
-          available: true,
-          port: 1234
+          ...state,
+          available: true
         };
       case 'setUnavailable':
           return {
-            available: false,
-            port: 1234
+            ...state,
+            available: false
           };
       default:
         throw new Error();
