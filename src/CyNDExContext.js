@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useReducer, useEffect, useMemo } from 'react';
 
 import ndexClient from 'ndex-client';
-import { FormatListNumberedRtlOutlined } from '@material-ui/icons';
 
 export const CyNDExContext = createContext({ available: false, port: 1234 });
 
-export const CyNDExProvider = ({  port, children }) => {
+export const CyNDExProvider = ({ port, children }) => {
   let initialState = {
     available: false,
     port: 1234
@@ -14,17 +13,15 @@ export const CyNDExProvider = ({  port, children }) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch(action.type) {
       case 'setAvailable':
-      
         return {
           available: true,
           port: 1234
         };
       case 'setUnavailable':
-         
           return {
             available: false,
             port: 1234
-          };;
+          };
       default:
         throw new Error();
     };
@@ -37,14 +34,11 @@ export const CyNDExProvider = ({  port, children }) => {
     if (pollCyREST) {
       cyndex.getCyNDExStatus().then(
         response => {
-          console.log("setAvailable");
           dispatch({ type: "setAvailable"})
         },
         err => {
-          console.log("setUnavailable");
           dispatch({ type: "setUnavailable" })
         });
-
       setTimeout(refresh, 5000);
     }
   }

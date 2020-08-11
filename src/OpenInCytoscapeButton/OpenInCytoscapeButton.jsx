@@ -38,47 +38,10 @@ const styles = theme => ({
 
 const OpenInCytoscapeButton = props => {
 
-  let pollCyREST = false;
-  const [cyRESTAvailable, setCyRESTAvailable] = useState(false);
-  
-  //const [{ available, port }, dispatch ] = useCyNDExValue();
-
-
-  function refresh() {
-    const cyndex = new ndexClient.CyNDEx(cyRESTPort);
-    if (cyRESTPollingActive) {
-      cyndex.getCyNDExStatus().then(
-        response => {
-          setCyRESTAvailable(true);
-        },
-        err => {
-          setCyRESTAvailable(false);
-        });
-
-      setTimeout(refresh, 5000);
-    }
-  }
-
-  const defaultPollingStart = () => {
-    pollCyREST = true;
-    setTimeout(refresh, 5000);
-  };
-
-  const defaultPollingStop = () => {
-    pollCyREST = false;
-  };
-
-  const defaultGetAvailable = () => {
-    return cyRESTAvailable
-  };
-
-  const defaultGetPollingActive = () => {
-    return pollCyREST;
-  }
-
-  const CYREST_BASE_URL = 'http://127.0.0.1'
-  const METHOD_POST = 'POST';
-  const METHOD_GET = 'GET'
+   
+  const cyNDExValue = useCyNDExValue();
+  const cyRESTAvailable = cyNDExValue.state.available;
+  const cyRESTPort = cyNDExValue.state.port;
 
   const importNetwork = () => {
     const cyndex = new ndexClient.CyNDEx(cyRESTPort);
@@ -102,31 +65,12 @@ const OpenInCytoscapeButton = props => {
   }
 
   const {
-    startCyRestPollingFunction = defaultPollingStart,
-    stopCyRestPollingFunction = defaultPollingStop,
-    getAvailable = defaultGetAvailable,
-    cyRESTPollingActive = defaultGetPollingActive,
-    cyRESTPort,
     variant,
     size,
     fetchCX,
     ndexNetworkProperties,
     getNDExCredentials
   } = props
-
-
-  
-
-  useEffect(() => {
-    console.log("networkproperties: " + ndexNetworkProperties);
-    //console.log("context available: " + available);
-    //console.log("context port: " + port);
-
-    typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
-    return () => {
-      typeof (stopCyRestPollingFunction) === typeof (Function) && stopCyRestPollingFunction();
-    }
-  }, [])
 
   const { classes } = props
 
@@ -148,12 +92,12 @@ const OpenInCytoscapeButton = props => {
         <Button
           className={classes.button}
           variant={variant}
-          disabled={!getAvailable()}
+          disabled={!cyRESTAvailable}
           onClick={importNetwork}
           size={size}
         >
           <Icon className={iconClassName(size)} >
-            <img className={classes.buttonIcon} src={!getAvailable() ? logoDisabled : logo} />
+            <img className={classes.buttonIcon} src={!cyRESTAvailable ? logoDisabled : logo} />
           </Icon>
         </Button>
       </Tooltip>
