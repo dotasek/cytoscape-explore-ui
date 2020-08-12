@@ -57,10 +57,18 @@ const OpenInCytoscapeButton = props => {
       }
       const accessKey = ndexNetworkProperties.accessKey;
       const idToken = ndexNetworkProperties.idToken;
-      cyndex.postNDExNetworkToCytoscape(ndexNetworkProperties.uuid, accessKey, idToken);
+      cyndex.postNDExNetworkToCytoscape(ndexNetworkProperties.uuid, accessKey, idToken)
+      .then(() => { console.log("cyndex NDEx import success")})
+      .catch(
+        () => { console.log("cyndex NDEx import fail")}
+      );
     } else {
       fetchCX().then(cx => {
-        return cyndex.postCXNetworkToCytoscape(cx);
+        cyndex.postCXNetworkToCytoscape(cx)
+        .then(() => { console.log("cyndex CX import success")})
+        .catch(
+          () => { console.log("cyndex CX import fail")}
+        );
       }, error => { console.log(error) });
     }
 

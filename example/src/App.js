@@ -78,7 +78,7 @@ const App = () => {
 
     <br />
     <Typography variant="h6" gutterBottom>
-      OpenInCytoscapeButton with Basic Authentication
+      OpenInCytoscapeButton with Context Authentication
       </Typography>
 
     <TextField
