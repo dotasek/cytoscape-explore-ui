@@ -7,6 +7,8 @@ import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 import ndexClient from 'ndex-client';
 
+import { useCyNDExValue } from '../CyNDExContext'
+import { useNDExAccountValue } from '../NDExAccountContext'
 
 import { fade } from '@material-ui/core/styles/colorManipulator'
 
@@ -37,84 +39,47 @@ const styles = theme => ({
 
 const OpenInCytoscapeButton = props => {
 
-  let pollCyREST = false;
-  const [cyRESTAvailable, setCyRESTAvailable] = useState(false);
+  const cyNDExValue = useCyNDExValue();
+  const cyRESTAvailable = cyNDExValue.state.available;
+  const cyRESTPort = cyNDExValue.state.port;
 
-  function refresh() {
-    if (cyRESTPollingActive) {
-      cyndex.getCyNDExStatus().then(
-        response => {
-          setCyRESTAvailable(true);
-        },
-        err => {
-          setCyRESTAvailable(false);
-        });
-
-      setTimeout(refresh, 5000);
-    }
-  }
-
-  const defaultPollingStart = () => {
-    pollCyREST = true;
-    setTimeout(refresh, 5000);
-  };
-
-  const defaultPollingStop = () => {
-    pollCyREST = false;
-  };
-
-  const defaultGetAvailable = () => {
-    return cyRESTAvailable
-  };
-
-  const defaultGetPollingActive = () => {
-    return pollCyREST;
-  }
-
-  const CYREST_BASE_URL = 'http://127.0.0.1'
-  const METHOD_POST = 'POST';
-  const METHOD_GET = 'GET'
+  const [{ ndexServerURL, loginInfo }, dispatch] = useNDExAccountValue();
 
   const importNetwork = () => {
+    const cyndex = new ndexClient.CyNDEx(cyRESTPort);
     if (ndexNetworkProperties) {
-      const username = ndexNetworkProperties.accessKey || ndexNetworkProperties.idToken ? undefined : ndexNetworkProperties.username;
-      const password = ndexNetworkProperties.accessKey || ndexNetworkProperties.idToken ? undefined : ndexNetworkProperties.password;
-      if (username && password) {
-        cyndex.setBasicAuth(username, password);
+       if (loginInfo) {
+        if (loginInfo.isGoogle) {
+          cyndex.setGoogleUser(loginInfo.loginDetails);
+        } else {
+          cyndex.setBasicAuth(loginInfo.loginDetails.id, loginInfo.loginDetails.password);
+        }
       }
       const accessKey = ndexNetworkProperties.accessKey;
       const idToken = ndexNetworkProperties.idToken;
-      cyndex.postNDExNetworkToCytoscape(ndexNetworkProperties.uuid, accessKey, idToken);
+      cyndex.postNDExNetworkToCytoscape(ndexNetworkProperties.uuid, accessKey, idToken)
+      .then(() => { console.log("cyndex NDEx import success")})
+      .catch(
+        () => { console.log("cyndex NDEx import fail")}
+      );
     } else {
       fetchCX().then(cx => {
-        return cyndex.postCXNetworkToCytoscape(cx);
+        cyndex.postCXNetworkToCytoscape(cx)
+        .then(() => { console.log("cyndex CX import success")})
+        .catch(
+          () => { console.log("cyndex CX import fail")}
+        );
       }, error => { console.log(error) });
     }
 
   }
 
   const {
-    startCyRestPollingFunction = defaultPollingStart,
-    stopCyRestPollingFunction = defaultPollingStop,
-    getAvailable = defaultGetAvailable,
-    cyRESTPollingActive = defaultGetPollingActive,
-    cyRESTPort,
     variant,
     size,
     fetchCX,
     ndexNetworkProperties
   } = props
-
-
-  const cyndex = new ndexClient.CyNDEx(cyRESTPort);
-
-  useEffect(() => {
-    console.log("networkproperties: " + ndexNetworkProperties);
-    typeof (startCyRestPollingFunction) === typeof (Function) && startCyRestPollingFunction();
-    return () => {
-      typeof (stopCyRestPollingFunction) === typeof (Function) && stopCyRestPollingFunction();
-    }
-  }, [])
 
   const { classes } = props
 
@@ -132,16 +97,16 @@ const OpenInCytoscapeButton = props => {
         disableFocusListener
         title="Open this network in Cytoscape Desktop"
         placement="bottom"
-      >
+      > 
         <Button
           className={classes.button}
           variant={variant}
-          disabled={!getAvailable()}
+          disabled={!cyRESTAvailable}
           onClick={importNetwork}
           size={size}
         >
           <Icon className={iconClassName(size)} >
-            <img className={classes.buttonIcon} src={!getAvailable() ? logoDisabled : logo} />
+            <img className={classes.buttonIcon} src={!cyRESTAvailable ? logoDisabled : logo} />
           </Icon>
         </Button>
       </Tooltip>

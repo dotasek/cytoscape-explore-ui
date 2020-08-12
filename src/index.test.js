@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import { OpenInCytoscapeButton } from '.';
 
-describe('ExampleComponent', () => {
+describe('OpenInCytoscapeButton', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
-  })
-})
+    expect(OpenInCytoscapeButton).toBeTruthy();
+  });
+});
