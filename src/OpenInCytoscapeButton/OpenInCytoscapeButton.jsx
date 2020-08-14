@@ -93,6 +93,7 @@ const OpenInCytoscapeButton = props => {
 
   return (
     <React.Fragment>
+      { /* Do not add any spaces between the span and button tags. Tooltip interprets these as an array of elements instead of nested elements and will throw an exception. */}
       <Tooltip
         disableFocusListener
         title="Open this network in Cytoscape Desktop"
