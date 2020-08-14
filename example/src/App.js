@@ -4,12 +4,11 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { OpenInCytoscapeButton } from 'cytoscape-explore-ui'
 import { NDExSignInButton } from 'cytoscape-explore-ui'
+import { SaveToNDExButton } from 'cytoscape-explore-ui'
 import { CyNDExProvider } from 'cytoscape-explore-ui'
 import Typography from '@material-ui/core/Typography'
 import 'cytoscape-explore-ui/dist/index.css'
 import { NDExAccountProvider } from 'cytoscape-explore-ui'
-
-
 
 const App = () => {
 
@@ -117,6 +116,9 @@ const App = () => {
     >LRG
     </Button>
     <NDExSignInButton variant="outlined" size="large" onLoginStateUpdated={loginStateUpdated} />
+    <br/><br/>
+    <SaveToNDExButton variant="outlined" size="small" />
+
     </NDExAccountProvider>
   </CyNDExProvider>
 
