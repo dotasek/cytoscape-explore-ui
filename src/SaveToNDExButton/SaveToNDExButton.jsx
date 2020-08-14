@@ -4,6 +4,7 @@ import Icon from '@material-ui/core/Icon'
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 import SaveIcon from '@material-ui/icons/Save';
+import { useNDExAccountValue } from '../NDExAccountContext'
 import ndexClient from 'ndex-client';
 
 
@@ -53,11 +54,9 @@ const NDExSignInButton = props => {
     onUpdate = onLoginStateUpdated
   }
 
+  const [{ ndexServerURL, loginInfo }, dispatch] = useNDExAccountValue();
 
-
-  const getAvailable = () => {
-    return true;
-  }
+ 
 
   const {
     onClick,
@@ -85,6 +84,7 @@ const NDExSignInButton = props => {
           className={classes.button}
           variant={variant}
           onClick={onClick}
+          disabled={!loginInfo }
           size={size}
         >
           <SaveIcon className={iconClassName(size)}/>

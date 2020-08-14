@@ -8,6 +8,8 @@ import Tooltip from '@material-ui/core/Tooltip'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ndexClient from 'ndex-client';
 import NdexLoginDialog from './NdexLoginDialog'
+import { useNDExAccountValue } from '../NDExAccountContext'
+import Avatar from '@material-ui/core/Avatar';
 
 const styles = theme => ({
   button: {
@@ -19,13 +21,16 @@ const styles = theme => ({
     'line-height': 0
   },
   iconSmall: {
-    height: '22px'
+    height: '22px',
+    width: '22px'
   },
   iconMedium: {
-    height: '24px'
+    height: '24px',
+    width: '24px'
   },
   iconLarge: {
-    height: '26px'
+    height: '26px',
+    width: '26px'
   },
   buttonIcon: {
     fontSizeSmall: '22px',
@@ -46,7 +51,7 @@ const NDExSignInButton = props => {
 
   const { classes } = props;
 
-
+  const [{ ndexServerURL, loginInfo }, dispatch] = useNDExAccountValue();
 
   const { ndexServer = 'http://public.ndexbio.org'
     , onLoginStateUpdated } = props
@@ -100,6 +105,11 @@ const NDExSignInButton = props => {
     }
   }
 
+  const getIcon = () => {
+    return loginInfo ? <Avatar className={iconClassName(size)}>H</Avatar> :
+    <AccountCircleIcon className={iconClassName(size)}/>
+  }
+
   return (
     <React.Fragment>
       <Tooltip
@@ -113,8 +123,8 @@ const NDExSignInButton = props => {
           onClick={() => setDialogState(true)}
           size={size}
         >
-          <AccountCircleIcon className={iconClassName(size)}/>
-         
+          { getIcon()
+          }
         </Button>
       </Tooltip>
       <NdexLoginDialog
