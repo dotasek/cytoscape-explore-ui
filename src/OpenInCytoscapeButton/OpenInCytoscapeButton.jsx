@@ -98,7 +98,7 @@ const OpenInCytoscapeButton = props => {
         title="Open this network in Cytoscape Desktop"
         placement="bottom"
       > 
-        <Button
+        <span><Button
           className={classes.button}
           variant={variant}
           disabled={!cyRESTAvailable}
@@ -108,7 +108,7 @@ const OpenInCytoscapeButton = props => {
           <Icon className={iconClassName(size)} >
             <img className={classes.buttonIcon} src={!cyRESTAvailable ? logoDisabled : logo} />
           </Icon>
-        </Button>
+        </Button></span>
       </Tooltip>
 
     </React.Fragment>

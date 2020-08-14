@@ -96,7 +96,6 @@ const NDExSignInButton = props => {
   } = props
 
  
-
   const iconClassName = (size) => {
     switch (size) {
       case 'small': return classes.iconSmall;

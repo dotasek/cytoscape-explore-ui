@@ -29,8 +29,10 @@ const styles = theme => ({
   buttonIcon: {
     fontSizeSmall: '22px',
     fontSizeLarge: '26px'
-  }
+  },
+  toolTipSpan: {
 
+  }
 })
 
 const DEFAULT_HANDLER = loginState => {
@@ -56,7 +58,7 @@ const NDExSignInButton = props => {
 
   const [{ ndexServerURL, loginInfo }, dispatch] = useNDExAccountValue();
 
- 
+
 
   const {
     onClick,
@@ -79,8 +81,8 @@ const NDExSignInButton = props => {
         disableFocusListener
         title="Save Network to NDEx"
         placement="bottom"
-      >
-        <Button
+      > 
+        <span><Button
           className={classes.button}
           variant={variant}
           onClick={onClick}
@@ -89,7 +91,8 @@ const NDExSignInButton = props => {
         >
           <SaveIcon className={iconClassName(size)}/>
          
-        </Button>
+        </Button></span>
+        
       </Tooltip>
      
     </React.Fragment>
