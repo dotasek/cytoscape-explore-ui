@@ -86,12 +86,10 @@ const NDExSignInButton = props => {
   }
 
   const getNDExAvatar = ()=> {
-    console.log("ndex url: " + loginInfo.loginDetails.image);
     return <Avatar className={iconClassName(size)} src={ loginInfo.loginDetails.image }></Avatar> 
   }
 
   const getGoogleAvatar = () => {
-    console.log("goog url: " + loginInfo.loginDetails.profileObj);
     return <Avatar className={iconClassName(size)} src={ loginInfo.loginDetails.profileObj.imageUrl }></Avatar> 
   }
 
