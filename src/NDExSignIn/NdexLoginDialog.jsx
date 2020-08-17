@@ -98,8 +98,6 @@ const NdexLoginDialog = props => {
       type: 'setLoginInfo',
       loginInfo: loginInfo
     })
-    //setLogin(loginInfo)
-    //setIsLogin(true)
     onLoginStateUpdated(loginInfo)
   }
 
@@ -158,8 +156,8 @@ const NdexLoginDialog = props => {
               className={classes.ndexLogo}
             />
             <div>
-              <Typography variant={'title'}>{DEFAULT_TITLE}</Typography>
-              <Typography variant={'subtitle1'}>{SUBTITLE}</Typography>
+              <Typography variant={'subtitle1'}>{DEFAULT_TITLE}</Typography>
+              <Typography variant={'subtitle2'}>{SUBTITLE}</Typography>
             </div>
           </div>
         </DialogTitle>
