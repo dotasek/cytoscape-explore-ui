@@ -46,7 +46,7 @@ const OpenInCytoscapeButton = props => {
   const importNetwork = () => {
     const cyndex = new ndexClient.CyNDEx(cyRESTPort);
     if (ndexNetworkProperties) {
-       if (loginInfo) {
+      if (loginInfo) {
         if (loginInfo.isGoogle) {
           cyndex.setGoogleUser(loginInfo.loginDetails);
         } else {
@@ -56,20 +56,24 @@ const OpenInCytoscapeButton = props => {
       const accessKey = ndexNetworkProperties.accessKey;
       const idToken = ndexNetworkProperties.idToken;
       cyndex.postNDExNetworkToCytoscape(ndexNetworkProperties.uuid, accessKey, idToken)
-      .then((response) => { 
-        onSuccess(response.data) })
-      .catch(
-        (error) => { onFailure( error ) }
-      );
+        .then(response => {
+          typeof onSuccess !== "undefined" && onSuccess(response.data)
+        })
+        .catch(error => { 
+          typeof onFailure !== "undefined" && onFailure(error) 
+        });
     } else {
       fetchCX().then(cx => {
         cyndex.postCXNetworkToCytoscape(cx)
-        .then((response) => { 
-          onSuccess(onSuccess(response.data)) } )
-        .catch(
-          error => { onFailure( error ) }
-        );
-      }, error => { onFailure( error ) });
+          .then(response => {
+            typeof onSuccess !== "undefined" && onSuccess(response.data)
+          })
+          .catch(error => { 
+            typeof onFailure !== "undefined" && onFailure(error) 
+          });
+      }, error => { 
+        typeof onFailure !== "undefined" && onFailure(error) 
+      });
     }
 
   }
@@ -99,7 +103,7 @@ const OpenInCytoscapeButton = props => {
         disableFocusListener
         title="Open this network in Cytoscape Desktop"
         placement="bottom"
-      > 
+      >
         <span><Button //Do not add any spaces between the span and button tags. Tooltip interprets these as an array of elements instead of nested elements and will throw an exception.
           className={classes.button}
           variant={variant}

@@ -60,11 +60,16 @@ const SaveToNDExButton = props => {
     }
     fetchCX().then(cx => {
       ndex.createNetworkFromRawCX(cx)
-      .then((data) => { onSuccess(data) })
+      .then(data => { 
+        typeof onSuccess !== "undefined" && onSuccess(data) 
+      })
       .catch(
-        (error) => { onFailure(error) }
-      );
-    }, error => { onFailure(error) });
+        error => { 
+          typeof onFailure !== "undefined" && onFailure(error) 
+        });
+    }, error => { 
+      typeof onFailure !== "undefined" && onFailure(error) 
+    });
   }
 
   const iconClassName = (size) => {
