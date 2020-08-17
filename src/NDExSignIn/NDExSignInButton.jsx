@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
-import Icon from '@material-ui/core/Icon'
-import logo from '../assets/images/cytoscape-logo.svg'
-import logoDisabled from '../assets/images/cytoscape-logo-mono-light.svg'
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ndexClient from 'ndex-client';
 import NdexLoginDialog from './NdexLoginDialog'
 import { useNDExAccountValue } from '../NDExAccountContext'
 import Avatar from '@material-ui/core/Avatar';
@@ -61,7 +57,6 @@ const NDExSignInButton = props => {
   }
 
   const [isOpen, setOpen] = useState(false)
-  const [isLogin, setLogin] = useState(false)
 
   const setDialogState = dialogState => {
     setOpen(dialogState)
@@ -126,7 +121,6 @@ const NDExSignInButton = props => {
       <NdexLoginDialog
         setDialogState={setDialogState}
         isOpen={isOpen}
-        setIsLogin={setLogin}
         ndexServer={ndexServerURL}
         onLoginStateUpdated={onUpdate}
       />

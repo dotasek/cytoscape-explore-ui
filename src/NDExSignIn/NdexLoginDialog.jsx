@@ -64,8 +64,7 @@ const NdexLoginDialog = props => {
     isOpen,
     setDialogState,
     onLoginStateUpdated,
-    ndexServer,
-    setIsLogin
+    ndexServer
   } = props
 
   const onLoginSuccess = event => {
@@ -78,7 +77,7 @@ const NdexLoginDialog = props => {
       type: 'setLoginInfo',
       loginInfo: null
     })
-    setIsLogin(false)
+    //setIsLogin(false)
     onLoginStateUpdated(null)
   }
 
@@ -100,7 +99,7 @@ const NdexLoginDialog = props => {
       loginInfo: loginInfo
     })
     //setLogin(loginInfo)
-    setIsLogin(true)
+    //setIsLogin(true)
     onLoginStateUpdated(loginInfo)
   }
 
