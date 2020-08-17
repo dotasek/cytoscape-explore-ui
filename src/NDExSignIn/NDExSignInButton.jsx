@@ -56,10 +56,6 @@ const NDExSignInButton = props => {
   const { ndexServer = 'http://public.ndexbio.org'
     , onLoginStateUpdated } = props
 
-  const defaultIconComponent = (
-    <img alt="NDEx logo" src={logo} className={classes.buttonIcon} />
-  )
-
   let onUpdate = DEFAULT_HANDLER
   if (onLoginStateUpdated !== null && onLoginStateUpdated !== undefined) {
     onUpdate = onLoginStateUpdated
@@ -67,11 +63,6 @@ const NDExSignInButton = props => {
 
   const [isOpen, setOpen] = useState(false)
   const [isLogin, setLogin] = useState(false)
-  const [icon, setButtonIcon] = useState(defaultIconComponent)
-
-  const setIcon = iconComponent => {
-    setButtonIcon(iconComponent !== null ? iconComponent : defaultIconComponent)
-  }
 
   const setDialogState = dialogState => {
     setOpen(dialogState)
@@ -83,10 +74,6 @@ const NDExSignInButton = props => {
   const defaultSignInStatus = () => {
     return false;
   };
-
-  const getAvailable = () => {
-    return true;
-  }
 
   const {
     signInAction = defaultSignInAction,
@@ -138,7 +125,6 @@ const NDExSignInButton = props => {
         </Button>
       </Tooltip>
       <NdexLoginDialog
-        setIcon={setIcon}
         setDialogState={setDialogState}
         isOpen={isOpen}
         setIsLogin={setLogin}

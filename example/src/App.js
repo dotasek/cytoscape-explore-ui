@@ -44,7 +44,7 @@ const App = () => {
   }
 
   return <CyNDExProvider port='1234' >
-    <NDExAccountProvider ndexServerURL='http://public.ndexbio.org/' >
+    <NDExAccountProvider ndexServerURL='http://public.ndexbio.org' >
     <Typography variant="h6" gutterBottom>
       OpenInCytoscapeButton
       </Typography>

@@ -65,7 +65,6 @@ const NdexLoginDialog = props => {
     setDialogState,
     onLoginStateUpdated,
     ndexServer,
-    setIcon,
     setIsLogin
   } = props
 
@@ -80,7 +79,6 @@ const NdexLoginDialog = props => {
       loginInfo: null
     })
     setIsLogin(false)
-    setIcon(null)
     onLoginStateUpdated(null)
   }
 
@@ -103,7 +101,6 @@ const NdexLoginDialog = props => {
     })
     //setLogin(loginInfo)
     setIsLogin(true)
-    setIcon(<Avatar className={classes.userIcon} src={userImage}></Avatar>)
     onLoginStateUpdated(loginInfo)
   }
 
