@@ -7703,9 +7703,9 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-"ndex-client@https://github.com/ndexbio/ndex-js-client#cyndex-google-auth":
-  version "0.1.0"
-  resolved "https://github.com/ndexbio/ndex-js-client#01fc05edbf03d5728868464e20bd4987926ec02e"
+"ndex-client@https://github.com/ndexbio/ndex-js-client":
+  version "0.2.0"
+  resolved "https://github.com/ndexbio/ndex-js-client#843807b82937476f88ea86f6478b456e538fcca5"
   dependencies:
     axios "^0.18.0"
 

@@ -35,14 +35,6 @@ const styles = theme => ({
   }
 })
 
-const DEFAULT_HANDLER = loginState => {
-  // Default callback function for login status change
-  console.warn('Default handler: NDEx login state updated', loginState)
-
-  // Add actual handler here...
-}
-
-
 const SaveToNDExButton = props => {
 
   const { classes } = props;
@@ -51,6 +43,7 @@ const SaveToNDExButton = props => {
 
   const {
     onSuccess,
+    onFailure,
     variant,
     fetchCX,
     size
@@ -67,11 +60,11 @@ const SaveToNDExButton = props => {
     }
     fetchCX().then(cx => {
       ndex.createNetworkFromRawCX(cx)
-      .then(() => { console.log("ndex CX create success")})
+      .then((data) => { onSuccess(data) })
       .catch(
-        (error) => { console.log("ndex CX create fail: " + error)}
+        (error) => { onFailure(error) }
       );
-    }, error => { console.log(error) });
+    }, error => { onFailure(error) });
   }
 
   const iconClassName = (size) => {

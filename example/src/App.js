@@ -25,6 +25,14 @@ const App = () => {
 
   const [ndexNetworkProperties, setNdexNetworkProperties] = useState(DEFAULT_NETWORK_PROPERTIES);
 
+  const onSuccess = (data) => {
+    console.log("SUCCESS: " + data);
+  }
+
+  const onFailure = (error) => {
+    console.log("FAILURE: " + error);
+  }
+
   const handleChange = (event) => {
     const newProperties = Object.assign({}, ndexNetworkProperties);
     switch (event.target.id) {
@@ -55,7 +63,7 @@ const App = () => {
     >
       SML
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="small" fetchCX={fetchCX} />
+    <OpenInCytoscapeButton variant="outlined" size="small" fetchCX={fetchCX} onSuccess={onSuccess} onFailure={onFailure}/>
     &nbsp;
     <Button
       variant="outlined"
@@ -64,7 +72,7 @@ const App = () => {
     >
       MED
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="medium" fetchCX={fetchCX} />
+    <OpenInCytoscapeButton variant="outlined" size="medium" fetchCX={fetchCX} onSuccess={onSuccess} onFailure={onFailure}/>
     &nbsp;
     <Button
       variant="outlined"
@@ -73,7 +81,7 @@ const App = () => {
     >
       LRG
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="large" fetchCX={fetchCX} /><br />
+    <OpenInCytoscapeButton variant="outlined" size="large" fetchCX={fetchCX} onSuccess={onSuccess} onFailure={onFailure}/><br />
 
     <br />
     <Typography variant="h6" gutterBottom>
@@ -88,7 +96,7 @@ const App = () => {
       value={ndexNetworkProperties.uuid}
     /><br />
     <br />
-    <OpenInCytoscapeButton variant="outlined" ndexNetworkProperties={ndexNetworkProperties}></OpenInCytoscapeButton>
+    <OpenInCytoscapeButton variant="outlined" ndexNetworkProperties={ndexNetworkProperties} onSuccess={onSuccess} onFailure={onFailure}></OpenInCytoscapeButton>
     <br /><br />
     <Typography variant="h6" gutterBottom>
       NDEx Login Button
@@ -117,7 +125,7 @@ const App = () => {
     </Button>
     <NDExSignInButton variant="outlined" size="large" onLoginStateUpdated={loginStateUpdated} />
     <br/><br/>
-    <SaveToNDExButton variant="outlined" size="small" fetchCX={fetchCX} />
+    <SaveToNDExButton variant="outlined" size="small" fetchCX={fetchCX} onSuccess={onSuccess} onFailure={onFailure}/>
 
     </NDExAccountProvider>
   </CyNDExProvider>

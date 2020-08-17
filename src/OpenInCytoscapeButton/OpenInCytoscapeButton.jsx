@@ -10,8 +10,6 @@ import ndexClient from 'ndex-client';
 import { useCyNDExValue } from '../CyNDExContext'
 import { useNDExAccountValue } from '../NDExAccountContext'
 
-import { fade } from '@material-ui/core/styles/colorManipulator'
-
 const styles = theme => ({
   button: {
     color: '#EA9123',
@@ -58,18 +56,18 @@ const OpenInCytoscapeButton = props => {
       const accessKey = ndexNetworkProperties.accessKey;
       const idToken = ndexNetworkProperties.idToken;
       cyndex.postNDExNetworkToCytoscape(ndexNetworkProperties.uuid, accessKey, idToken)
-      .then(() => { console.log("cyndex NDEx import success")})
+      .then((data) => { onSuccess(data) })
       .catch(
-        () => { console.log("cyndex NDEx import fail")}
+        (error) => { onFailure( error ) }
       );
     } else {
       fetchCX().then(cx => {
         cyndex.postCXNetworkToCytoscape(cx)
-        .then(() => { console.log("cyndex CX import success")})
+        .then((data) => { onSuccess(data) } )
         .catch(
-          () => { console.log("cyndex CX import fail")}
+          error => { onFailure( error ) }
         );
-      }, error => { console.log(error) });
+      }, error => { onFailure( error ) });
     }
 
   }
@@ -77,6 +75,8 @@ const OpenInCytoscapeButton = props => {
   const {
     variant,
     size,
+    onSuccess,
+    onFailure,
     fetchCX,
     ndexNetworkProperties
   } = props
