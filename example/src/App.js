@@ -117,7 +117,7 @@ const App = () => {
     </Button>
     <NDExSignInButton variant="outlined" size="large" onLoginStateUpdated={loginStateUpdated} />
     <br/><br/>
-    <SaveToNDExButton variant="outlined" size="small" />
+    <SaveToNDExButton variant="outlined" size="small" fetchCX={fetchCX} />
 
     </NDExAccountProvider>
   </CyNDExProvider>

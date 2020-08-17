@@ -43,29 +43,36 @@ const DEFAULT_HANDLER = loginState => {
 }
 
 
-const NDExSignInButton = props => {
+const SaveToNDExButton = props => {
 
   const { classes } = props;
 
-  const { ndexServer = 'http://public.ndexbio.org'
-    , onLoginStateUpdated } = props
-
-
-  let onUpdate = DEFAULT_HANDLER
-  if (onLoginStateUpdated !== null && onLoginStateUpdated !== undefined) {
-    onUpdate = onLoginStateUpdated
-  }
-
   const [{ ndexServerURL, loginInfo }, dispatch] = useNDExAccountValue();
 
-
-
   const {
-    onClick,
+    onSuccess,
     variant,
+    fetchCX,
     size
   } = props
 
+  const onClick = () => {
+    const ndex = new ndexClient.NDEx(ndexServerURL + '/v2');
+    if (loginInfo) {
+      if (loginInfo.isGoogle) {
+        ndex.setGoogleUser(loginInfo.loginDetails);
+      } else {
+        ndex.setBasicAuth(loginInfo.loginDetails.id, loginInfo.loginDetails.password);
+      }
+    }
+    fetchCX().then(cx => {
+      ndex.createNetworkFromRawCX(cx)
+      .then(() => { console.log("ndex CX create success")})
+      .catch(
+        (error) => { console.log("ndex CX create fail: " + error)}
+      );
+    }, error => { console.log(error) });
+  }
 
   const iconClassName = (size) => {
     switch (size) {
@@ -77,17 +84,17 @@ const NDExSignInButton = props => {
 
   return (
     <React.Fragment>
-      { /* Do not add any spaces between the span and button tags. Tooltip interprets these as an array of elements instead of nested elements and will throw an exception. */}
+      
       <Tooltip
         disableFocusListener
         title="Save Network to NDEx"
         placement="bottom"
       > 
-        <span><Button
+        <span><Button //Do not add any spaces between the span and button tags. Tooltip interprets these as an array of elements instead of nested elements and will throw an exception.
           className={classes.button}
           variant={variant}
           onClick={onClick}
-          disabled={!loginInfo }
+          disabled={!loginInfo}
           size={size}
         >
           <SaveIcon className={iconClassName(size)}/>
@@ -100,4 +107,4 @@ const NDExSignInButton = props => {
   )
 }
 
-export default withStyles(styles)(NDExSignInButton)
+export default withStyles(styles)(SaveToNDExButton)
