@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
-import Icon from '@material-ui/core/Icon'
-import logo from '../assets/images/cytoscape-logo.svg'
-import logoDisabled from '../assets/images/cytoscape-logo-mono-light.svg'
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ndexClient from 'ndex-client';
 import NdexLoginDialog from './NdexLoginDialog'
+import { useNDExAccountValue } from '../NDExAccountContext'
+import Avatar from '@material-ui/core/Avatar';
 
 const styles = theme => ({
   button: {
@@ -19,13 +17,16 @@ const styles = theme => ({
     'line-height': 0
   },
   iconSmall: {
-    height: '22px'
+    height: '22px',
+    width: '22px'
   },
   iconMedium: {
-    height: '24px'
+    height: '24px',
+    width: '24px'
   },
   iconLarge: {
-    height: '26px'
+    height: '26px',
+    width: '26px'
   },
   buttonIcon: {
     fontSizeSmall: '22px',
@@ -46,14 +47,9 @@ const NDExSignInButton = props => {
 
   const { classes } = props;
 
+  const [{ ndexServerURL, loginInfo }, dispatch] = useNDExAccountValue();
 
-
-  const { ndexServer = 'http://public.ndexbio.org'
-    , onLoginStateUpdated } = props
-
-  const defaultIconComponent = (
-    <img alt="NDEx logo" src={logo} className={classes.buttonIcon} />
-  )
+  const { onLoginStateUpdated } = props
 
   let onUpdate = DEFAULT_HANDLER
   if (onLoginStateUpdated !== null && onLoginStateUpdated !== undefined) {
@@ -61,12 +57,6 @@ const NDExSignInButton = props => {
   }
 
   const [isOpen, setOpen] = useState(false)
-  const [isLogin, setLogin] = useState(false)
-  const [icon, setButtonIcon] = useState(defaultIconComponent)
-
-  const setIcon = iconComponent => {
-    setButtonIcon(iconComponent !== null ? iconComponent : defaultIconComponent)
-  }
 
   const setDialogState = dialogState => {
     setOpen(dialogState)
@@ -79,10 +69,6 @@ const NDExSignInButton = props => {
     return false;
   };
 
-  const getAvailable = () => {
-    return true;
-  }
-
   const {
     signInAction = defaultSignInAction,
     getSignInStatus = defaultSignInStatus,
@@ -91,13 +77,26 @@ const NDExSignInButton = props => {
   } = props
 
  
-
   const iconClassName = (size) => {
     switch (size) {
       case 'small': return classes.iconSmall;
       case 'large': return classes.iconLarge;
       default: return classes.iconMedium;
     }
+  }
+
+  const getNDExAvatar = ()=> {
+    return <Avatar className={iconClassName(size)} src={ loginInfo.loginDetails.image }></Avatar> 
+  }
+
+  const getGoogleAvatar = () => {
+    return <Avatar className={iconClassName(size)} src={ loginInfo.loginDetails.profileObj.imageUrl }></Avatar> 
+  }
+
+  const getIcon = () => {
+    return loginInfo 
+    ? loginInfo.isGoogle ? getGoogleAvatar() : getNDExAvatar()
+    : <AccountCircleIcon className={iconClassName(size)}/>
   }
 
   return (
@@ -113,16 +112,14 @@ const NDExSignInButton = props => {
           onClick={() => setDialogState(true)}
           size={size}
         >
-          <AccountCircleIcon className={iconClassName(size)}/>
-         
+          { getIcon()
+          }
         </Button>
       </Tooltip>
       <NdexLoginDialog
-        setIcon={setIcon}
         setDialogState={setDialogState}
         isOpen={isOpen}
-        setIsLogin={setLogin}
-        ndexServer={ndexServer}
+        ndexServer={ndexServerURL}
         onLoginStateUpdated={onUpdate}
       />
     </React.Fragment>

@@ -27,7 +27,7 @@ const NdexUserInfoPanel = props => {
       <Avatar className={classes.item} src={userImage}>
         U
       </Avatar>
-      <Typography variant={'title'} className={classes.item}>
+      <Typography variant={'subtitle1'} className={classes.item}>
         You are logged in as {userName}
       </Typography>
       <Button

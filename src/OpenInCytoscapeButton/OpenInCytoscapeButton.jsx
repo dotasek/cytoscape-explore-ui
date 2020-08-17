@@ -10,8 +10,6 @@ import ndexClient from 'ndex-client';
 import { useCyNDExValue } from '../CyNDExContext'
 import { useNDExAccountValue } from '../NDExAccountContext'
 
-import { fade } from '@material-ui/core/styles/colorManipulator'
-
 const styles = theme => ({
   button: {
     color: '#EA9123',
@@ -58,18 +56,20 @@ const OpenInCytoscapeButton = props => {
       const accessKey = ndexNetworkProperties.accessKey;
       const idToken = ndexNetworkProperties.idToken;
       cyndex.postNDExNetworkToCytoscape(ndexNetworkProperties.uuid, accessKey, idToken)
-      .then(() => { console.log("cyndex NDEx import success")})
+      .then((response) => { 
+        onSuccess(response.data) })
       .catch(
-        () => { console.log("cyndex NDEx import fail")}
+        (error) => { onFailure( error ) }
       );
     } else {
       fetchCX().then(cx => {
         cyndex.postCXNetworkToCytoscape(cx)
-        .then(() => { console.log("cyndex CX import success")})
+        .then((response) => { 
+          onSuccess(onSuccess(response.data)) } )
         .catch(
-          () => { console.log("cyndex CX import fail")}
+          error => { onFailure( error ) }
         );
-      }, error => { console.log(error) });
+      }, error => { onFailure( error ) });
     }
 
   }
@@ -77,6 +77,8 @@ const OpenInCytoscapeButton = props => {
   const {
     variant,
     size,
+    onSuccess,
+    onFailure,
     fetchCX,
     ndexNetworkProperties
   } = props
@@ -98,7 +100,7 @@ const OpenInCytoscapeButton = props => {
         title="Open this network in Cytoscape Desktop"
         placement="bottom"
       > 
-        <Button
+        <span><Button //Do not add any spaces between the span and button tags. Tooltip interprets these as an array of elements instead of nested elements and will throw an exception.
           className={classes.button}
           variant={variant}
           disabled={!cyRESTAvailable}
@@ -108,7 +110,7 @@ const OpenInCytoscapeButton = props => {
           <Icon className={iconClassName(size)} >
             <img className={classes.buttonIcon} src={!cyRESTAvailable ? logoDisabled : logo} />
           </Icon>
-        </Button>
+        </Button></span>
       </Tooltip>
 
     </React.Fragment>

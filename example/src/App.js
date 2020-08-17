@@ -4,12 +4,11 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { OpenInCytoscapeButton } from 'cytoscape-explore-ui'
 import { NDExSignInButton } from 'cytoscape-explore-ui'
+import { SaveToNDExButton } from 'cytoscape-explore-ui'
 import { CyNDExProvider } from 'cytoscape-explore-ui'
 import Typography from '@material-ui/core/Typography'
 import 'cytoscape-explore-ui/dist/index.css'
 import { NDExAccountProvider } from 'cytoscape-explore-ui'
-
-
 
 const App = () => {
 
@@ -25,6 +24,14 @@ const App = () => {
   }
 
   const [ndexNetworkProperties, setNdexNetworkProperties] = useState(DEFAULT_NETWORK_PROPERTIES);
+
+  const onSuccess = (data) => {
+    console.log("SUCCESS: " + JSON.stringify(data));
+  }
+
+  const onFailure = (error) => {
+    console.log("FAILURE: " + error);
+  }
 
   const handleChange = (event) => {
     const newProperties = Object.assign({}, ndexNetworkProperties);
@@ -45,7 +52,7 @@ const App = () => {
   }
 
   return <CyNDExProvider port='1234' >
-    <NDExAccountProvider ndexServerURL='http://public.ndexbio.org/' >
+    <NDExAccountProvider ndexServerURL='http://public.ndexbio.org' >
     <Typography variant="h6" gutterBottom>
       OpenInCytoscapeButton
       </Typography>
@@ -56,7 +63,7 @@ const App = () => {
     >
       SML
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="small" fetchCX={fetchCX} />
+    <OpenInCytoscapeButton variant="outlined" size="small" fetchCX={fetchCX} onSuccess={onSuccess} onFailure={onFailure}/>
     &nbsp;
     <Button
       variant="outlined"
@@ -65,7 +72,7 @@ const App = () => {
     >
       MED
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="medium" fetchCX={fetchCX} />
+    <OpenInCytoscapeButton variant="outlined" size="medium" fetchCX={fetchCX} onSuccess={onSuccess} onFailure={onFailure}/>
     &nbsp;
     <Button
       variant="outlined"
@@ -74,7 +81,7 @@ const App = () => {
     >
       LRG
       </Button>
-    <OpenInCytoscapeButton variant="outlined" size="large" fetchCX={fetchCX} /><br />
+    <OpenInCytoscapeButton variant="outlined" size="large" fetchCX={fetchCX} onSuccess={onSuccess} onFailure={onFailure}/><br />
 
     <br />
     <Typography variant="h6" gutterBottom>
@@ -89,7 +96,7 @@ const App = () => {
       value={ndexNetworkProperties.uuid}
     /><br />
     <br />
-    <OpenInCytoscapeButton variant="outlined" ndexNetworkProperties={ndexNetworkProperties}></OpenInCytoscapeButton>
+    <OpenInCytoscapeButton variant="outlined" ndexNetworkProperties={ndexNetworkProperties} onSuccess={onSuccess} onFailure={onFailure}></OpenInCytoscapeButton>
     <br /><br />
     <Typography variant="h6" gutterBottom>
       NDEx Login Button
@@ -117,6 +124,9 @@ const App = () => {
     >LRG
     </Button>
     <NDExSignInButton variant="outlined" size="large" onLoginStateUpdated={loginStateUpdated} />
+    <br/><br/>
+    <SaveToNDExButton variant="outlined" size="small" fetchCX={fetchCX} onSuccess={onSuccess} onFailure={onFailure}/>
+
     </NDExAccountProvider>
   </CyNDExProvider>
 
