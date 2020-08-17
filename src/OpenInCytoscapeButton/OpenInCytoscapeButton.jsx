@@ -56,14 +56,16 @@ const OpenInCytoscapeButton = props => {
       const accessKey = ndexNetworkProperties.accessKey;
       const idToken = ndexNetworkProperties.idToken;
       cyndex.postNDExNetworkToCytoscape(ndexNetworkProperties.uuid, accessKey, idToken)
-      .then((data) => { onSuccess(data) })
+      .then((response) => { 
+        onSuccess(response.data) })
       .catch(
         (error) => { onFailure( error ) }
       );
     } else {
       fetchCX().then(cx => {
         cyndex.postCXNetworkToCytoscape(cx)
-        .then((data) => { onSuccess(data) } )
+        .then((response) => { 
+          onSuccess(onSuccess(response.data)) } )
         .catch(
           error => { onFailure( error ) }
         );

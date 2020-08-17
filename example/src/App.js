@@ -26,7 +26,7 @@ const App = () => {
   const [ndexNetworkProperties, setNdexNetworkProperties] = useState(DEFAULT_NETWORK_PROPERTIES);
 
   const onSuccess = (data) => {
-    console.log("SUCCESS: " + data);
+    console.log("SUCCESS: " + JSON.stringify(data));
   }
 
   const onFailure = (error) => {
