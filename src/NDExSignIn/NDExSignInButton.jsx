@@ -53,8 +53,7 @@ const NDExSignInButton = props => {
 
   const [{ ndexServerURL, loginInfo }, dispatch] = useNDExAccountValue();
 
-  const { ndexServer = 'http://public.ndexbio.org'
-    , onLoginStateUpdated } = props
+  const { onLoginStateUpdated } = props
 
   let onUpdate = DEFAULT_HANDLER
   if (onLoginStateUpdated !== null && onLoginStateUpdated !== undefined) {
@@ -128,7 +127,7 @@ const NDExSignInButton = props => {
         setDialogState={setDialogState}
         isOpen={isOpen}
         setIsLogin={setLogin}
-        ndexServer={ndexServer}
+        ndexServer={ndexServerURL}
         onLoginStateUpdated={onUpdate}
       />
     </React.Fragment>
